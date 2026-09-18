@@ -7,8 +7,6 @@ export const config = {
   },
 };
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
 async function readBody(req: VercelRequest) {
   const chunks: Buffer[] = [];
   for await (const chunk of req as AsyncIterable<Buffer | string>) {
@@ -26,7 +24,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const body = await readBody(req);
     if (!body.length) return res.status(400).json({ error: "Файл не передан" });
-    if (body.length > MAX_FILE_SIZE) return res.status(413).json({ error: "Максимальный размер фотографии — 10 МБ" });
 
     const contentType = String(req.headers["content-type"] || "application/octet-stream");
     if (!contentType.startsWith("image/")) return res.status(415).json({ error: "Разрешены только изображения" });

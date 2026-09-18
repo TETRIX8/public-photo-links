@@ -22,7 +22,6 @@ type UploadedPhoto = {
 };
 
 const HISTORY_KEY = "public-photo-links-history";
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 function readHistory(): UploadedPhoto[] {
   try {
@@ -62,13 +61,6 @@ export default function Home() {
       });
       return;
     }
-    if (nextFile.size > MAX_FILE_SIZE) {
-      toast.error("Файл слишком большой", {
-        description: "Максимальный размер фотографии — 10 МБ.",
-      });
-      return;
-    }
-
     if (preview) URL.revokeObjectURL(preview);
     setFile(nextFile);
     setPreview(URL.createObjectURL(nextFile));
@@ -219,7 +211,7 @@ export default function Home() {
               </div>
               <p className="font-display text-xl font-extrabold tracking-[-0.04em]">Выбери фото</p>
               <p className="mt-2 text-sm leading-5 text-[#858b98]">Нажми или перетащи файл сюда</p>
-              <span className="mt-5 rounded-full bg-[#eef0f4] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#676d7a]">JPG · PNG · WEBP · до 10 МБ</span>
+              <span className="mt-5 rounded-full bg-[#eef0f4] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#676d7a]">JPG · PNG · WEBP · публичная ссылка</span>
               <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleInput} />
             </div>
           ) : (
